@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Employee Portal</title>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+</head>
+<body>
+  <!-- Div for HeadLine -->
+  <div class="top shadow-lg p-3 mb-5 bg-body rounded">
+    <h1><u>Sankey Solutions</u></h1>
+    <h6>Employee Portal</h6>
+  </div>
+
+<!-- Div containing middle and end part -->
+    <div class="container ">
+
+<!-- Div for middle part where the user will enter info -->
+      <div class="mid ">
+        <form onsubmit="return addEmp()">
+            <div class="row">
+
+              <div class="col-4">
+                <label for="id">ID<span style="color:red;">*</span></label>
+                <input type="number" class="form-control" id="id" placeholder="Enter ID" >
+                <p id="disp_id" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+              </div>
+
+              <div class="col-4">
+                <label for="name">Name<span style="color:red;">*</span></label>
+                <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                <p id="disp_name" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+              </div>
+
+              <div class="col-4">
+                <label for="age">Age<span style="color:red;">*</span></label>
+                <input type="number" min="15" max="65" class="form-control" id="age" placeholder="Enter Age">
+                <p id="disp_age" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">
+                <label for="gender">Gender<span style="color:red;">*</span></label>
+                <select class="form-select" id="gender">
+                  <option value="">--select--</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Others">Others</option>
+                </select>
+                <p id="disp_gender" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+              </div>
+
+               <div class="col-4">
+                  <label for="role">Designation<span style="color:red;">*</span></label>
+                  <select class="form-select" id="role">
+                    <option value="">--select--</option>
+                    <option value="Solution Analyst">Solution Analyst</option>
+                    <option value="Solution Architect">Solution Architect</option>
+                    <option value="Assistant Manager">Assistant Manager</option>
+                    <option value="Manager" >Manager</option>
+                    <option value="HR">HR</option>
+                    <option value="Others">Others</option>
+                  </select>
+                  <p id="disp_role" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+                </div>
+
+                <div class="col-4">
+                  <label for="img" class="img">Image<span style="color:red;">*</span></label>
+                  <input type="text" class="form-control" id="img" name="image" placeholder="Add image">
+                  <p id="disp_img" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+                </div>
+            </div>
+            
+            <input type="submit" name="action" value="ADD" class="btn btn-primary float-end" onclick="validate()">
+        </form> 
+      </div>
+
+<!-- Div for end part where table is display -->
+      <div class="end shadow-lg p-3 mb-5 bg-body rounded">
+                  <input  onkeyup="myFunction()" class="form-control" id="searchInput" name="image" placeholder="Search here..">
+
+        <table class="table table-bordered table-hover table-striped table-responsive" id="table searchTable" style="text-align: center">
+          <thead>
+            <tr class="table-dark">
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Designation</th>
+            <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+          </tbody>
+        </table>
+      </div>
+</div>
+
+<!-- Div for editing employee details -->
+<div id="popup" >
+  <div class = "update shadow-lg p-4 pt-2 mb-5 bg-body rounded">
+    <div class="row">
+      <div class="col">
+        <button onclick=" shut()" class="btn close float-end">
+          <img src="close.png" style="width: 25px" ; alt="close">
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class = "col">
+        <h3>Edit Details</h3>
+        <hr class="solid">
+      </div>
+    </div>
+
+    <div class="row" >
+      <form onsubmit="addupdateEmp(id)">
+        <input type="text" id="e" style="display: none;">
+        <div class="row mt-3" style="justify-content:space-around;">
+
+          <div class="col-5">
+            <label for="id">ID<span style="color:red;">*</span></label>
+            <input disabled type="number" class="form-control" id="ide" placeholder="Enter ID">
+            <p id="disp_id" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+            <div class="form-text"></div>
+          </div>
+
+          <div class="col-5">
+            <label for="name">Name<span style="color:red;">*</span></label>
+            <input type="text" class="form-control" id="namee" placeholder="Enter Name">
+            <p id="disp_name" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+            <div class="form-text editNameErr"></div>
+          </div>
+        </div>
+
+        <div class="row mt-3" style="justify-content:space-around;">
+
+          <div class="col-5">
+            <label for="age">Age<span style="color:red;">*</span></label>
+            <input type="number" min="15" max="65" class="form-control" id="agee" placeholder="Enter Age">
+            <p id="disp_age" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+            <div class="form-text editAgeErr"></div>
+          </div>
+          <div class="col-5">
+            <label for="gender">Gender<span style="color:red;">*</span></label>
+            <select class="form-select" id="gendere">
+              <option value="">--select--</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
+            </select>
+            <p id="disp_gender" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+            <div class="form-text editGenderErr"></div>
+          </div>
+        </div>
+
+        <div class="row mt-3" style="justify-content:space-around;">
+
+          <div class="col-5">
+            <label for="role">Designation<span style="color:red;">*</span></label>
+            <select class="form-select" id="rolee">
+              <option value="">--select--</option>
+              <option value="Solution Analyst">Solution Analyst</option>
+              <option value="Solution Architect">Solution Architect</option>
+              <option value="Assistant Manager">Assistant Manager</option>
+              <option value="Manager">Manager</option>
+              <option value="HR">HR</option>
+              <option value="Others">Others</option>
+            </select>
+            <p id="disp_role" style="color: red; font-size: 12px; margin-top: 0px;"></p>
+            <div class="form-text editDesignationErr"></div>
+          </div>
+          <div class="col-5">
+            <label for="img">Image<span style="color:red;">*</span></label>
+            <input type="text" class="form-control" id="imge" name="image">
+            <p id="disp_img" style="color: red; font-size: 12px; margin-top: 0px;" placeholder="Add image"></p>
+            <div class="form-text editImageErr"></div>
+          </div>
+        </div>
+        <div class="action" style="padding-top: 10px;">
+        <button onclick="shut()" class="btn btn-danger">Cancel</button>
+        <input type="submit" name="action" value="ADD" class="btn btn-primary float-end" >
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Div for View -->
+<div id="view-popup">
+  <div class = "view shadow-lg p-3 pt-1 mb-5 bg-body rounded" style="width: 30%;">
+    <div class = "row">
+      <div class = "bg">
+        <div class = "row">
+          <div class = "col">
+            <button onclick="shut()" class="btn close float-end">
+              <img src="close.png" style="width: 25px;" alt ="close">
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h3>View</h3>
+            <hr class="solid">
+          </div>
+        </div>
+        <div class = "row" style="justify-content: center;">
+            <img src="" class="image" id="viewimg" style="width:25%; border:black 5px solid; padding: 0;" class="imgv" alt="Photo">
+         
+        </div>
+      </div>
+    </div>
+    <div class = "row show">
+      <div class="row ps-5">
+          <div class="col view">
+            <p>ID : <span id="idv"></span></p>
+          </div>
+          <div class="col view"></div>
+        </div>
+        <div class="row ps-5">
+          <div class="col view">
+            <p>NAME : <span id="namev"></span></p>
+          </div>
+        </div>
+        <div class= "row ps-5">
+          <div class = "col view">
+            <p>AGE : <span id="agev"></span></p>
+          </div>
+        </div>
+        <div class="row ps-5">
+          <div class="col view">
+            <p>GENDER : <span id="genderv"></span></p>
+          </div>
+        </div>
+        <div class="row ps-5">
+          <div class="col view">
+            <p>DESIGNATION : <span id="rolev"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="overlay">
+</div>
+<script src="table.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
